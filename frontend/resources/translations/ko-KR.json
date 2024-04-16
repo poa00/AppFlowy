@@ -324,13 +324,9 @@
       "isComplete": "완료되었습니다",
       "isIncomplted": "불완전하다"
     },
-    "singleSelectOptionFilter": {
+    "selectOptionFilter": {
       "is": "~이다",
       "isNot": "아니다",
-      "isEmpty": "비었다",
-      "isNotEmpty": "비어 있지 않음"
-    },
-    "multiSelectOptionFilter": {
       "contains": "포함",
       "doesNotContain": "포함되어 있지 않다",
       "isEmpty": "비었다",
@@ -552,7 +548,12 @@
       "createNewCard": "추가"
     },
     "menuName": "판자",
-    "referencedBoardPrefix": "관점"
+    "referencedBoardPrefix": "관점",
+    "mobile": {
+      "showGroup": "그룹 표시",
+      "showGroupContent": "이 그룹을 보드에 표시하시겠습니까?",
+      "failedToLoad": "보드 보기를 로드하지 못했습니다."
+    }
   },
   "calendar": {
     "menuName": "달력",

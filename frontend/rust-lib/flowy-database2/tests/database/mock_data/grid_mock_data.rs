@@ -23,7 +23,6 @@ pub fn make_test_grid() -> DatabaseData {
       FieldType::RichText => {
         let text_field = FieldBuilder::from_field_type(field_type)
           .name("Name")
-          .visibility(true)
           .primary(true)
           .build();
         fields.push(text_field);
@@ -35,7 +34,6 @@ pub fn make_test_grid() -> DatabaseData {
 
         let number_field = FieldBuilder::new(field_type, type_option)
           .name("Price")
-          .visibility(true)
           .build();
         fields.push(number_field);
       },
@@ -49,7 +47,6 @@ pub fn make_test_grid() -> DatabaseData {
         let name = "Time";
         let date_field = FieldBuilder::new(field_type, date_type_option)
           .name(name)
-          .visibility(true)
           .build();
         fields.push(date_field);
       },
@@ -68,7 +65,6 @@ pub fn make_test_grid() -> DatabaseData {
         };
         let timestamp_field = FieldBuilder::new(field_type, timestamp_type_option)
           .name(name)
-          .visibility(true)
           .build();
         fields.push(timestamp_field);
       },
@@ -83,7 +79,6 @@ pub fn make_test_grid() -> DatabaseData {
           .extend(vec![option1, option2, option3]);
         let single_select_field = FieldBuilder::new(field_type, single_select_type_option)
           .name("Status")
-          .visibility(true)
           .build();
         fields.push(single_select_field);
       },
@@ -96,7 +91,6 @@ pub fn make_test_grid() -> DatabaseData {
         type_option.options.extend(vec![option1, option2, option3]);
         let multi_select_field = FieldBuilder::new(field_type, type_option)
           .name("Platform")
-          .visibility(true)
           .build();
         fields.push(multi_select_field);
       },
@@ -104,7 +98,6 @@ pub fn make_test_grid() -> DatabaseData {
         // Checkbox
         let checkbox_field = FieldBuilder::from_field_type(field_type)
           .name("is urgent")
-          .visibility(true)
           .build();
         fields.push(checkbox_field);
       },
@@ -112,19 +105,13 @@ pub fn make_test_grid() -> DatabaseData {
         // URL
         let url = FieldBuilder::from_field_type(field_type)
           .name("link")
-          .visibility(true)
           .build();
         fields.push(url);
       },
       FieldType::Checklist => {
-        // let option1 = SelectOption::with_color(FIRST_THING, SelectOptionColor::Purple);
-        // let option2 = SelectOption::with_color(SECOND_THING, SelectOptionColor::Orange);
-        // let option3 = SelectOption::with_color(THIRD_THING, SelectOptionColor::Yellow);
         let type_option = ChecklistTypeOption;
-        // type_option.options.extend(vec![option1, option2, option3]);
         let checklist_field = FieldBuilder::new(field_type, type_option)
           .name("TODO")
-          .visibility(true)
           .build();
         fields.push(checklist_field);
       },
@@ -134,7 +121,6 @@ pub fn make_test_grid() -> DatabaseData {
         };
         let relation_field = FieldBuilder::new(field_type, type_option)
           .name("Related")
-          .visibility(true)
           .build();
         fields.push(relation_field);
       },
@@ -301,7 +287,6 @@ pub fn make_no_date_test_grid() -> DatabaseData {
       FieldType::RichText => {
         let text_field = FieldBuilder::from_field_type(field_type)
           .name("Name")
-          .visibility(true)
           .primary(true)
           .build();
         fields.push(text_field);
@@ -313,7 +298,6 @@ pub fn make_no_date_test_grid() -> DatabaseData {
 
         let number_field = FieldBuilder::new(field_type, type_option)
           .name("Price")
-          .visibility(true)
           .build();
         fields.push(number_field);
       },

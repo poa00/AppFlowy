@@ -199,7 +199,7 @@ class MobileHiddenGroup extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  group.groupName,
+                  context.read<BoardBloc>().generateGroupNameFromGroup(group),
                   style: Theme.of(context).textTheme.bodyMedium,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -215,9 +215,9 @@ class MobileHiddenGroup extends StatelessWidget {
                 ),
                 onTap: () => showFlowyMobileConfirmDialog(
                   context,
-                  title: FlowyText(LocaleKeys.board_mobile_unhideGroup.tr()),
+                  title: FlowyText(LocaleKeys.board_mobile_showGroup.tr()),
                   content: FlowyText(
-                    LocaleKeys.board_mobile_unhideGroupContent.tr(),
+                    LocaleKeys.board_mobile_showGroupContent.tr(),
                   ),
                   actionButtonTitle: LocaleKeys.button_yes.tr(),
                   actionButtonColor: Theme.of(context).colorScheme.primary,

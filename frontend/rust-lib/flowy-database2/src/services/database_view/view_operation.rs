@@ -11,7 +11,7 @@ use flowy_error::FlowyError;
 use lib_infra::future::{Fut, FutureResult};
 use lib_infra::priority_task::TaskDispatcher;
 
-use crate::entities::{FieldType, FieldVisibility};
+use crate::entities::{FieldSettingsChangesetPB, FieldType};
 use crate::services::calculations::Calculation;
 use crate::services::field::TypeOptionCellDataHandler;
 use crate::services::field_settings::FieldSettings;
@@ -27,7 +27,7 @@ pub trait DatabaseViewOperation: Send + Sync + 'static {
   /// Get the view of the database with the view_id
   fn get_view(&self, view_id: &str) -> Fut<Option<DatabaseView>>;
   /// If the field_ids is None, then it will return all the field revisions
-  fn get_fields(&self, view_id: &str, field_ids: Option<Vec<String>>) -> Fut<Vec<Arc<Field>>>;
+  fn get_fields(&self, view_id: &str, field_ids: Option<Vec<String>>) -> Fut<Vec<Field>>;
 
   /// Returns the field with the field_id
   fn get_field(&self, field_id: &str) -> Option<Field>;
@@ -91,15 +91,15 @@ pub trait DatabaseViewOperation: Send + Sync + 'static {
 
   fn remove_calculation(&self, view_id: &str, calculation_id: &str);
 
-  fn get_all_filters(&self, view_id: &str) -> Vec<Arc<Filter>>;
+  fn get_all_filters(&self, view_id: &str) -> Vec<Filter>;
+
+  fn get_filter(&self, view_id: &str, filter_id: &str) -> Option<Filter>;
 
   fn delete_filter(&self, view_id: &str, filter_id: &str);
 
   fn insert_filter(&self, view_id: &str, filter: Filter);
 
-  fn get_filter(&self, view_id: &str, filter_id: &str) -> Option<Filter>;
-
-  fn get_filter_by_field_id(&self, view_id: &str, field_id: &str) -> Option<Filter>;
+  fn save_filters(&self, view_id: &str, filters: &[Filter]);
 
   fn get_layout_setting(&self, view_id: &str, layout_ty: &DatabaseLayout) -> Option<LayoutSetting>;
 
@@ -118,7 +118,6 @@ pub trait DatabaseViewOperation: Send + Sync + 'static {
   fn get_type_option_cell_handler(
     &self,
     field: &Field,
-    field_type: &FieldType,
   ) -> Option<Box<dyn TypeOptionCellDataHandler>>;
 
   fn get_field_settings(
@@ -127,11 +126,5 @@ pub trait DatabaseViewOperation: Send + Sync + 'static {
     field_ids: &[String],
   ) -> HashMap<String, FieldSettings>;
 
-  fn update_field_settings(
-    &self,
-    view_id: &str,
-    field_id: &str,
-    visibility: Option<FieldVisibility>,
-    width: Option<i32>,
-  );
+  fn update_field_settings(&self, params: FieldSettingsChangesetPB);
 }

@@ -16,8 +16,6 @@ pub enum FolderScript {
   AssertWorkspace(WorkspacePB),
   #[allow(dead_code)]
   ReadWorkspace(String),
-
-  // App
   CreateParentView {
     name: String,
     desc: String,
@@ -81,16 +79,16 @@ impl FolderTest {
     let parent_view = create_view(
       &sdk,
       &workspace.id,
-      "Folder App",
-      "Folder test app",
+      "first level view",
+      "",
       ViewLayout::Document,
     )
     .await;
     let view = create_view(
       &sdk,
       &parent_view.id,
-      "Folder View",
-      "Folder test view",
+      "second level view",
+      "",
       ViewLayout::Document,
     )
     .await;
@@ -210,7 +208,7 @@ pub async fn create_workspace(sdk: &EventIntegrationTest, name: &str, desc: &str
   };
 
   EventBuilder::new(sdk.clone())
-    .event(CreateWorkspace)
+    .event(CreateFolderWorkspace)
     .payload(request)
     .async_send()
     .await
@@ -246,6 +244,7 @@ pub async fn create_view(
     meta: Default::default(),
     set_as_current: true,
     index: None,
+    section: None,
   };
   EventBuilder::new(sdk.clone())
     .event(CreateView)
@@ -275,6 +274,8 @@ pub async fn move_view(
     view_id,
     new_parent_id: parent_id,
     prev_view_id,
+    from_section: None,
+    to_section: None,
   };
   let error = EventBuilder::new(sdk.clone())
     .event(MoveNestedView)

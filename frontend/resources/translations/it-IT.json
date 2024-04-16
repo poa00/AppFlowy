@@ -183,9 +183,7 @@
     "dragRow": "Premere a lungo per riordinare la riga",
     "viewDataBase": "Visualizza banca dati",
     "referencePage": "Questo {nome} è referenziato",
-    "addBlockBelow": "Aggiungi un blocco qui sotto",
-    "urlLaunchAccessory": "Apri nel browser",
-    "urlCopyAccessory": "Copia l'URL"
+    "addBlockBelow": "Aggiungi un blocco qui sotto"
   },
   "sideBar": {
     "closeSidebar": "Close sidebar",
@@ -518,13 +516,9 @@
       "isComplete": "è completo",
       "isIncomplted": "è incompleto"
     },
-    "singleSelectOptionFilter": {
+    "selectOptionFilter": {
       "is": "È",
       "isNot": "Non è",
-      "isEmpty": "È vuoto",
-      "isNotEmpty": "Non è vuoto"
-    },
-    "multiSelectOptionFilter": {
       "contains": "Contiene",
       "doesNotContain": "Non contiene",
       "isEmpty": "È vuoto",
@@ -619,8 +613,8 @@
       "cannotFindCreatableField": "Impossibile trovare un campo adatto per l'ordinamento",
       "deleteAllSorts": "Elimina tutti gli ordinamenti",
       "addSort": "Aggiungi ordinamento",
-      "deleteSort": "Elimina ordinamento",
-      "removeSorting": "Si desidera rimuovere l'ordinamento?"
+      "removeSorting": "Si desidera rimuovere l'ordinamento?",
+      "deleteSort": "Elimina ordinamento"
     },
     "row": {
       "duplicate": "Duplicare",
@@ -664,6 +658,10 @@
       "submitNewTask": "Crea",
       "hideComplete": "Nascondi le attività completate",
       "showComplete": "Mostra tutte le attività"
+    },
+    "url": {
+      "launch": "Apri nel browser",
+      "copy": "Copia l'URL"
     },
     "menuName": "Griglia",
     "referencedGridPrefix": "Vista di",
@@ -728,6 +726,7 @@
       "discardResponse": "Vuoi scartare le risposte AI?",
       "createInlineMathEquation": "Crea un'equazione",
       "fonts": "Caratteri",
+      "emoji": "Emoji",
       "toggleList": "Elenco alternato",
       "quoteList": "Elenco citazioni",
       "numberedList": "Elenco numerato",
@@ -813,8 +812,7 @@
         "newDatabase": "Nuova banca dati",
         "linkToDatabase": "Collegamento alla banca dati"
       },
-      "date": "Data",
-      "emoji": "Emoji"
+      "date": "Data"
     },
     "textBlock": {
       "placeholder": "Digita '/' per i comandi"
@@ -936,9 +934,9 @@
     "notesTooltip": "Note all'interno",
     "mobile": {
       "editURL": "Modifica URL",
-      "unhideGroup": "Mostra gruppo",
-      "unhideGroupContent": "Sei sicuro di voler mostrare questo gruppo sulla bacheca?",
-      "faildToLoad": "Impossibile caricare la visualizzazione della bacheca"
+      "showGroup": "Mostra gruppo",
+      "showGroupContent": "Sei sicuro di voler mostrare questo gruppo sulla bacheca?",
+      "failedToLoad": "Impossibile caricare la visualizzazione della bacheca"
     }
   },
   "calendar": {

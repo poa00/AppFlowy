@@ -69,6 +69,7 @@ class _GridSortNotifier extends ChangeNotifier {
 }
 
 typedef OnReceiveUpdateFields = void Function(List<FieldInfo>);
+typedef OnReceiveField = void Function(FieldInfo);
 typedef OnReceiveFields = void Function(List<FieldInfo>);
 typedef OnReceiveFilters = void Function(List<FilterInfo>);
 typedef OnReceiveSorts = void Function(List<SortInfo>);
@@ -162,75 +163,6 @@ class FieldController {
 
   /// Listen for filter changes in the backend.
   void _listenOnFilterChanges() {
-    void deleteFilterFromChangeset(
-      List<FilterInfo> filters,
-      FilterChangesetNotificationPB changeset,
-    ) {
-      final deleteFilterIds = changeset.deleteFilters.map((e) => e.id).toList();
-      if (deleteFilterIds.isNotEmpty) {
-        filters.retainWhere(
-          (element) => !deleteFilterIds.contains(element.filter.id),
-        );
-      }
-    }
-
-    void insertFilterFromChangeset(
-      List<FilterInfo> filters,
-      FilterChangesetNotificationPB changeset,
-    ) {
-      for (final newFilter in changeset.insertFilters) {
-        final filterIndex =
-            filters.indexWhere((element) => element.filter.id == newFilter.id);
-        if (filterIndex == -1) {
-          final fieldInfo = _findFieldInfo(
-            fieldInfos: fieldInfos,
-            fieldId: newFilter.fieldId,
-            fieldType: newFilter.fieldType,
-          );
-          if (fieldInfo != null) {
-            filters.add(FilterInfo(viewId, newFilter, fieldInfo));
-          }
-        }
-      }
-    }
-
-    void updateFilterFromChangeset(
-      List<FilterInfo> filters,
-      FilterChangesetNotificationPB changeset,
-    ) {
-      for (final updatedFilter in changeset.updateFilters) {
-        final filterIndex = filters.indexWhere(
-          (element) => element.filter.id == updatedFilter.filterId,
-        );
-        // Remove the old filter
-        if (filterIndex != -1) {
-          filters.removeAt(filterIndex);
-        }
-
-        // Insert the filter if there is a filter and its field info is
-        // not null
-        if (updatedFilter.hasFilter()) {
-          final fieldInfo = _findFieldInfo(
-            fieldInfos: fieldInfos,
-            fieldId: updatedFilter.filter.fieldId,
-            fieldType: updatedFilter.filter.fieldType,
-          );
-
-          if (fieldInfo != null) {
-            // Insert the filter with the position: filterIndex, otherwise,
-            // append it to the end of the list.
-            final filterInfo =
-                FilterInfo(viewId, updatedFilter.filter, fieldInfo);
-            if (filterIndex != -1) {
-              filters.insert(filterIndex, filterInfo);
-            } else {
-              filters.add(filterInfo);
-            }
-          }
-        }
-      }
-    }
-
     _filtersListener.start(
       onFilterChanged: (result) {
         if (_isDisposed) {
@@ -239,15 +171,19 @@ class FieldController {
 
         result.fold(
           (FilterChangesetNotificationPB changeset) {
-            final List<FilterInfo> filters = filterInfos;
-            // delete removed filters
-            deleteFilterFromChangeset(filters, changeset);
+            final List<FilterInfo> filters = [];
+            for (final filter in changeset.filters.items) {
+              final fieldInfo = _findFieldInfo(
+                fieldInfos: fieldInfos,
+                fieldId: filter.data.fieldId,
+                fieldType: filter.data.fieldType,
+              );
 
-            // insert new filters
-            insertFilterFromChangeset(filters, changeset);
-
-            // edit modified filters
-            updateFilterFromChangeset(filters, changeset);
+              if (fieldInfo != null) {
+                final filterInfo = FilterInfo(viewId, filter, fieldInfo);
+                filters.add(filterInfo);
+              }
+            }
 
             _filterNotifier?.filters = filters;
             _updateFieldInfos();
@@ -665,8 +601,8 @@ class FieldController {
     FilterInfo? getFilterInfo(FilterPB filterPB) {
       final fieldInfo = _findFieldInfo(
         fieldInfos: fieldInfos,
-        fieldId: filterPB.fieldId,
-        fieldType: filterPB.fieldType,
+        fieldId: filterPB.data.fieldId,
+        fieldType: filterPB.data.fieldType,
       );
       return fieldInfo != null ? FilterInfo(viewId, filterPB, fieldInfo) : null;
     }
@@ -751,6 +687,31 @@ class FieldController {
     }
   }
 
+  void addSingleFieldListener(
+    String fieldId, {
+    required OnReceiveField onFieldChanged,
+    bool Function()? listenWhen,
+  }) {
+    void key(List<FieldInfo> fieldInfos) {
+      final fieldInfo = fieldInfos.firstWhereOrNull(
+        (fieldInfo) => fieldInfo.id == fieldId,
+      );
+      if (fieldInfo != null) {
+        onFieldChanged(fieldInfo);
+      }
+    }
+
+    void callback() {
+      if (listenWhen != null && listenWhen() == false) {
+        return;
+      }
+      key(fieldInfos);
+    }
+
+    _fieldCallbacks[key] = callback;
+    _fieldNotifier.addListener(callback);
+  }
+
   void removeListener({
     OnReceiveFields? onFieldsListener,
     OnReceiveSorts? onSortsListener,
@@ -775,6 +736,25 @@ class FieldController {
       if (callback != null) {
         _sortNotifier?.removeListener(callback);
       }
+    }
+  }
+
+  void removeSingleFieldListener({
+    required String fieldId,
+    required OnReceiveField onFieldChanged,
+  }) {
+    void key(List<FieldInfo> fieldInfos) {
+      final fieldInfo = fieldInfos.firstWhereOrNull(
+        (fieldInfo) => fieldInfo.id == fieldId,
+      );
+      if (fieldInfo != null) {
+        onFieldChanged(fieldInfo);
+      }
+    }
+
+    final callback = _fieldCallbacks.remove(key);
+    if (callback != null) {
+      _fieldNotifier.removeListener(callback);
     }
   }
 

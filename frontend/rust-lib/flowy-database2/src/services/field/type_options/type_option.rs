@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 use std::fmt::Debug;
 
 use bytes::Bytes;
-use collab_database::fields::{Field, TypeOptionData};
+use collab_database::fields::TypeOptionData;
 use collab_database::rows::Cell;
 use protobuf::ProtobufError;
 
@@ -19,10 +19,10 @@ use crate::services::field::{
   CheckboxTypeOption, DateTypeOption, MultiSelectTypeOption, NumberTypeOption, RelationTypeOption,
   RichTextTypeOption, SingleSelectTypeOption, TimestampTypeOption, URLTypeOption,
 };
-use crate::services::filter::FromFilterString;
+use crate::services::filter::{ParseFilterData, PreFillCellsWithFilter};
 use crate::services::sort::SortCondition;
 
-pub trait TypeOption {
+pub trait TypeOption: From<TypeOptionData> + Into<TypeOptionData> {
   /// `CellData` represents the decoded model for the current type option. Each of them must
   /// implement the From<&Cell> trait. If the `Cell` cannot be decoded into this type, the default
   /// value will be returned.
@@ -58,7 +58,7 @@ pub trait TypeOption {
   type CellProtobufType: TryInto<Bytes, Error = ProtobufError> + Debug;
 
   /// Represents the filter configuration for this type option.
-  type CellFilter: FromFilterString + Send + Sync + 'static;
+  type CellFilter: ParseFilterData + PreFillCellsWithFilter + Clone + Send + Sync + 'static;
 }
 /// This trait providing serialization and deserialization methods for cell data.
 ///
@@ -90,11 +90,6 @@ pub trait TypeOptionCellData {
 }
 
 pub trait TypeOptionTransform: TypeOption {
-  /// Returns true if the current `TypeOption` provides custom type option transformation
-  fn transformable(&self) -> bool {
-    false
-  }
-
   /// Transform the TypeOption from one field type to another
   /// For example, when switching from `Checkbox` type option to `Single-Select`
   /// type option, adding the `Yes` option if the `Single-select` type-option doesn't contain it.
@@ -111,23 +106,6 @@ pub trait TypeOptionTransform: TypeOption {
     _old_type_option_field_type: FieldType,
     _old_type_option_data: TypeOptionData,
   ) {
-  }
-
-  /// Transform the cell data from one field type to another
-  ///
-  /// # Arguments
-  ///
-  /// * `cell`: the cell in the current field type
-  /// * `transformed_field_type`: the cell will be transformed to the is field type's cell data.
-  /// current `TypeOption` field type.
-  ///
-  fn transform_type_option_cell(
-    &self,
-    _cell: &Cell,
-    _transformed_field_type: &FieldType,
-    _field: &Field,
-  ) -> Option<<Self as TypeOption>::CellData> {
-    None
   }
 }
 
@@ -274,7 +252,6 @@ pub fn default_type_option_data_from_type(field_type: FieldType) -> TypeOptionDa
     FieldType::DateTime => DateTypeOption::default().into(),
     FieldType::LastEditedTime | FieldType::CreatedTime => TimestampTypeOption {
       field_type,
-      include_time: true,
       ..Default::default()
     }
     .into(),

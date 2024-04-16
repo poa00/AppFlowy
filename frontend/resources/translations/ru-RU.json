@@ -187,9 +187,7 @@
     "dragRow": "Перетащите для изменения порядка строк",
     "viewDataBase": "Просмотр базы данных",
     "referencePage": "Ссылки на {name}",
-    "addBlockBelow": "Добавьте блок ниже",
-    "urlLaunchAccessory": "Открыть в браузере",
-    "urlCopyAccessory": "Скопировать URL"
+    "addBlockBelow": "Добавьте блок ниже"
   },
   "sideBar": {
     "closeSidebar": "Закрыть боковое меню",
@@ -493,14 +491,14 @@
       "typeAValue": "Введите значение...",
       "layout": "Вид",
       "databaseLayout": "Вид базы данных",
-      "viewList": "Представление базы данных",
       "editView": "Редактировать представление",
       "boardSettings": "Настройки доски",
       "calendarSettings": "Настройки календаря",
       "createView": "Новое представление",
       "duplicateView": "Дублировать представление",
       "deleteView": "Удалить представление",
-      "numberOfVisibleFields": "{} показано"
+      "numberOfVisibleFields": "{} показано",
+      "viewList": "Представление базы данных"
     },
     "textFilter": {
       "contains": "Содержит",
@@ -530,13 +528,9 @@
       "isComplete": "завершено",
       "isIncomplted": "не завершено"
     },
-    "singleSelectOptionFilter": {
+    "selectOptionFilter": {
       "is": "Является",
       "isNot": "Не является",
-      "isEmpty": "Пусто",
-      "isNotEmpty": "Не пусто"
-    },
-    "multiSelectOptionFilter": {
       "contains": "Содержит",
       "doesNotContain": "Не содержит",
       "isEmpty": "Пусто",
@@ -689,6 +683,10 @@
       "hideComplete": "Скрыть выполненные задачи",
       "showComplete": "Показать все задачи"
     },
+    "url": {
+      "launch": "Открыть в браузере",
+      "copy": "Скопировать URL"
+    },
     "relation": {
       "relatedDatabasePlaceLabel": "Связанная база данных",
       "relatedDatabasePlaceholder": "Пусто",
@@ -759,6 +757,7 @@
       "discardResponse": "Хотите убрать ответы ИИ?",
       "createInlineMathEquation": "Создать уравнение",
       "fonts": "Шрифты",
+      "emoji": "Эмодзи",
       "toggleList": "Выпадающий список",
       "quoteList": "Список цитат",
       "numberedList": "Нумерованный список",
@@ -846,8 +845,7 @@
         "newDatabase": "Новая база данных",
         "linkToDatabase": "Связать базу данных"
       },
-      "date": "Дата",
-      "emoji": "Эмодзи"
+      "date": "Дата"
     },
     "outlineBlock": {
       "placeholder": "Оглавление"
@@ -974,9 +972,9 @@
     "notesTooltip": "Заметки",
     "mobile": {
       "editURL": "Редактировать URL",
-      "unhideGroup": "Показать группу",
-      "unhideGroupContent": "Точно показать эту группу на доске?",
-      "faildToLoad": "Ошибка загрузки доски"
+      "showGroup": "Показать группу",
+      "showGroupContent": "Точно показать эту группу на доске?",
+      "failedToLoad": "Ошибка загрузки доски"
     }
   },
   "calendar": {

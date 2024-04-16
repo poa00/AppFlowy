@@ -8,9 +8,9 @@ use futures::stream::StreamExt;
 use tokio::sync::broadcast::Receiver;
 
 use flowy_database2::entities::{
-  DeleteSortPayloadPB, FieldType, ReorderSortPayloadPB, UpdateSortPayloadPB,
+  CreateRowPayloadPB, DeleteSortPayloadPB, ReorderSortPayloadPB, UpdateSortPayloadPB,
 };
-use flowy_database2::services::cell::stringify_cell_data;
+use flowy_database2::services::cell::stringify_cell;
 use flowy_database2::services::database_view::DatabaseViewChanged;
 use flowy_database2::services::sort::SortCondition;
 
@@ -119,10 +119,9 @@ impl DatabaseSortTest {
         let mut cells = vec![];
         let rows = self.editor.get_rows(&self.view_id).await.unwrap();
         let field = self.editor.get_field(&field_id).unwrap();
-        let field_type = FieldType::from(field.field_type);
         for row_detail in rows {
           if let Some(cell) = row_detail.row.cells.get(&field_id) {
-            let content = stringify_cell_data(cell, &field_type, &field_type, &field);
+            let content = stringify_cell(cell, &field);
             cells.push(content);
           } else {
             cells.push("".to_string());
@@ -155,15 +154,10 @@ impl DatabaseSortTest {
         );
         self
           .editor
-          .create_row(
-            &self.view_id,
-            None,
-            collab_database::rows::CreateRowParams {
-              id: collab_database::database::gen_row_id(),
-              timestamp: collab_database::database::timestamp(),
-              ..Default::default()
-            },
-          )
+          .create_row(CreateRowPayloadPB {
+            view_id: self.view_id.clone(),
+            ..Default::default()
+          })
           .await
           .unwrap();
       },
@@ -217,7 +211,7 @@ async fn assert_sort_changed(
           old_row_orders.insert(changed.new_index, old);
           assert_eq!(old_row_orders, new_row_orders);
         },
-        DatabaseViewChanged::InsertSortedRowNotification(_changed) => {},
+        DatabaseViewChanged::InsertRowNotification(_changed) => {},
         _ => {},
       }
     })

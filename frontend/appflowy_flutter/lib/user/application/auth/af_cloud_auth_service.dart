@@ -72,8 +72,9 @@ class AppFlowyCloudAuthService implements AuthService {
             throw Exception('AppFlowyCloudDeepLink is not registered');
           }
         } else {
-          completer
-              .complete(FlowyResult.failure(AuthError.signInWithOauthError));
+          completer.complete(
+            FlowyResult.failure(AuthError.unableToGetDeepLink),
+          );
         }
 
         return completer.future;
@@ -99,7 +100,10 @@ class AppFlowyCloudAuthService implements AuthService {
     required String email,
     Map<String, String> params = const {},
   }) async {
-    throw UnimplementedError();
+    return _backendAuthService.signInWithMagicLink(
+      email: email,
+      params: params,
+    );
   }
 
   @override

@@ -452,13 +452,9 @@
       "isComplete": "selesai",
       "isIncomplted": "tidak lengkap"
     },
-    "singleSelectOptionFilter": {
+    "selectOptionFilter": {
       "is": "Adalah",
       "isNot": "Tidak",
-      "isEmpty": "Kosong",
-      "isNotEmpty": "Tidak kosong"
-    },
-    "multiSelectOptionFilter": {
       "contains": "Mengandung",
       "doesNotContain": "Tidak mengandung",
       "isEmpty": "Kosong",
@@ -762,7 +758,12 @@
     "ungroupedButtonTooltip": "Berisi kartu yang tidak termasuk dalam grup mana pun",
     "ungroupedItemsTitle": "Klik untuk menambahkan ke papan",
     "groupBy": "Kelompokkan berdasarkan",
-    "referencedBoardPrefix": "Pemandangan dari"
+    "referencedBoardPrefix": "Pemandangan dari",
+    "mobile": {
+      "showGroup": "Tampilkan grup",
+      "showGroupContent": "Apakah Anda yakin ingin menampilkan grup ini di papan?",
+      "failedToLoad": "Gagal memuat tampilan papan"
+    }
   },
   "calendar": {
     "menuName": "Kalender",

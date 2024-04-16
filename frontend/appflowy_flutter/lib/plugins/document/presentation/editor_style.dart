@@ -161,7 +161,8 @@ class EditorStyleCustomizer {
   TextStyle codeBlockStyleBuilder() {
     final theme = Theme.of(context);
     final fontSize = context.read<DocumentAppearanceCubit>().state.fontSize;
-    final fontFamily = context.read<DocumentAppearanceCubit>().state.fontFamily;
+    final fontFamily =
+        context.read<DocumentAppearanceCubit>().state.codeFontFamily;
     return baseTextStyle(fontFamily).copyWith(
       fontSize: fontSize,
       height: 1.5,
@@ -220,6 +221,13 @@ class EditorStyleCustomizer {
         fontWeight: fontWeight,
       );
     } on Exception {
+      if ([builtInFontFamily, builtInCodeFontFamily].contains(fontFamily)) {
+        return TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: fontWeight,
+        );
+      }
+
       return GoogleFonts.getFont(builtInFontFamily);
     }
   }
@@ -294,7 +302,10 @@ class EditorStyleCustomizer {
           ..onTap = () {
             final editorState = context.read<EditorState>();
             if (editorState.selection == null) {
-              afLaunchUrlString(href);
+              afLaunchUrlString(
+                href,
+                addingHttpSchemeWhenFailed: true,
+              );
               return;
             }
 

@@ -426,13 +426,9 @@
       "isComplete": "está completo",
       "isIncomplted": "está incompleto"
     },
-    "singleSelectOptionFilter": {
+    "selectOptionFilter": {
       "is": "É",
       "isNot": "não é",
-      "isEmpty": "Está vazia",
-      "isNotEmpty": "Não está vazio"
-    },
-    "multiSelectOptionFilter": {
       "contains": "contém",
       "doesNotContain": "Não contém",
       "isEmpty": "Está vazia",
@@ -728,7 +724,12 @@
       "createNewCard": "Novo"
     },
     "menuName": "Quadro",
-    "referencedBoardPrefix": "Vista de"
+    "referencedBoardPrefix": "Vista de",
+    "mobile": {
+      "showGroup": "Mostrar grupo",
+      "showGroupContent": "Tem certeza de que deseja mostrar este grupo no quadro?",
+      "failedToLoad": "Falha ao carregar a visualização do quadro"
+    }
   },
   "calendar": {
     "menuName": "Calendário",
